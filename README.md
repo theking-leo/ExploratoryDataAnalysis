@@ -1,169 +1,137 @@
-Exploratory Data Analysis(EDA)
-We Use EDA to get the basic understanding of the data set i.e we explore the data.
+## Exploratory Data Analysis (EDA) - Iris Flower Dataset
+#### Introduction
 
-First thing we do after getting the data set is EDA.
+Exploratory Data Analysis (EDA) is a crucial step in the data analysis process. It allows us to gain a basic understanding of the dataset by exploring its features, distributions, and relationships between variables. In this document, we will perform EDA on the Iris Flower Dataset, a simple dataset designed for learning and understanding fundamental data analysis techniques.
 
-Iris Flower DataSet
-Toy Dataset: Iris Dataset: [https://en.wikipedia.org/wiki/Iris_flower_data_set]
+#### About the Iris Flower Dataset
 
-A simple dataset to learn the basics.
-3 flowers of Iris species. [see images on wikipedia link above]
-1936 by Ronald Fisher.
-Petal and Sepal: http://terpconnect.umd.edu/~petersd/666/html/iris_with_labels.jpg
-* Objective: Classify a new flower as belonging to one of the 3 classes given the 4 features.
-Importance of domain knowledge.
-Why use petal and sepal dimensions as features?
-Why do we not use 'color' as a feature?
-The four features of these 3 types of flowers
-(Iris setosa, Iris versicolor, Iris virginica) are:
+The Iris Flower Dataset, created by Ronald Fisher in 1936, is a classic and widely used dataset in the field of machine learning and statistics. It consists of measurements from three different species of Iris flowers: Iris setosa, Iris versicolor, and Iris virginica. The dataset includes four features for each flower:
 
-1)Sepal Length
-2)Sepal Width
-3)Petal Length
-4)petal Width
+    Sepal Length (in centimeters)
+    Sepal Width (in centimeters)
+    Petal Length (in centimeters)
+    Petal Width (in centimeters)
 
-We will classify the given flower by using this Four Features
+The objective of this EDA is to classify a new flower into one of the three species based on these four features. It's important to note that we do not consider the flower's color as a feature in this analysis.
+Dataset Source
+
+You can find more information about the Iris Flower Dataset on Wikipedia.
+
+
+##### Getting Started
+
+To follow along with this EDA, make sure you have the dataset file (usually in CSV format) ready. You can load the dataset into your Python environment using libraries like Pandas:
 
 import pandas as pd
-import numpy as np
-import matplotlib.pyplot as plt
-import seaborn as sns
-iris = pd.read_csv('iris.csv');
-# Q) How many data points and Features in dataset?
-iris.shape
-(150, 5)
-observation: 150 rows/data points and 5 cols/features
 
-#cols present in dataset
+##### Load the Iris dataset
 
-iris.columns
-Index(['sepal_length', 'sepal_width', 'petal_length', 'petal_width',
-       'species'],
-      dtype='object')
-iris.head()
-sepal_length	sepal_width	petal_length	petal_width	species
-0	5.1	3.5	1.4	0.2	setosa
-1	4.9	3.0	1.4	0.2	setosa
-2	4.7	3.2	1.3	0.2	setosa
-3	4.6	3.1	1.5	0.2	setosa
-4	5.0	3.6	1.4	0.2	setosa
-#Q) how many datapts for each type of flower?
+Dataset Overview
+Number of Data Points and Features
 
-#types = iris.groupby('species');
-#types.count()
+The Iris dataset consists of 150 data points (rows) and 5 columns (features).
 
-#or
+##### Check the shape of the dataset
+print(iris.shape)  # Output: (150, 5)
 
-iris['species'].value_counts()
-virginica     50
-versicolor    50
-setosa        50
-Name: species, dtype: int64
-Observation: its a balanced data set
+Exploratory Data Analysis (EDA) - Iris Flower Dataset
+Introduction
 
-2-D ScatterPlot
-# label, color are optional parameters
-iris.plot(x='sepal_length',y='sepal_width',kind='scatter',label='datapoints');
-plt.show()
+Exploratory Data Analysis (EDA) is a crucial step in the data analysis process. It allows us to gain a basic understanding of the dataset by exploring its features, distributions, and relationships between variables. In this document, we will perform EDA on the Iris Flower Dataset, a simple dataset designed for learning and understanding fundamental data analysis techniques.
+About the Iris Flower Dataset
 
-# using seaborn lib to stylize the graph
-# sns is seaborn as imported above
-sns.set_style("whitegrid");
+The Iris Flower Dataset, created by Ronald Fisher in 1936, is a classic and widely used dataset in the field of machine learning and statistics. It consists of measurements from three different species of Iris flowers: Iris setosa, Iris versicolor, and Iris virginica. The dataset includes four features for each flower:
 
-# hue = 'species' -> color encoding based on 
-# distinct species here 3 types so 3 colors
+    Sepal Length (in centimeters)
+    Sepal Width (in centimeters)
+    Petal Length (in centimeters)
+    Petal Width (in centimeters)
 
-#size -> size of the graph
-sns.FacetGrid(iris, hue='species',size=5) \
-    .map(plt.scatter, 'sepal_length','sepal_width') \
-    .add_legend();
-plt.show();
+The objective of this EDA is to classify a new flower into one of the three species based on these four features. It's important to note that we do not consider the flower's color as a feature in this analysis.
+Dataset Source
 
-Obeservation:
-1)Setosa Flowers can be distinguished from this as they dont overlap with other types of flowers.
+You can find more information about the Iris Flower Dataset on Wikipedia.
+Getting Started
 
-2)Versicolor and and Virginica flowers cant be distinguished with this features(sepal lenght and width) as they overlapped.
+To follow along with this EDA, make sure you have the dataset file (usually in CSV format) ready. You can load the dataset into your Python environment using libraries like Pandas:
 
-If we draw a line we can classify setosa from these 3 types as they lie left side of the line.
+python
 
-3-D Scatter Plots
-https://plot.ly/pandas/3d-scatter-plots/
-
-Needs a lot to mouse interaction to interpret data.
-
-What about 4-D, 5-D or n-D scatter plot? Ans) as Human can visualize only 3d. n-D can be visualized through Maths oe of the way is 'Pair-Plot'
-
-Pair Plots
-As we cant visualize N-D we will divide features into all possible pairs and visualize the plot of pairs gives the total idea of the data.
-
-In Our Case We have 4 features:
-
-1)SL - sepal length
-2)SW - sepal width
-3)PL - petal length
-4)PW - petal width
-
-No.of pair plots with these 4 features is: 4C2
-i.e 6
-
-(SL,SW),(SL,PL),(PL,SW).....
-
-Note: We use Seaborn Lib to PairPlot
-
-sns.set_style("whitegrid");
-sns.pairplot(iris,hue='species',size=3);
-plt.show()
-
-Observation: From the above graphs PW-PL graph is perfect to distinguish between 3 flowers with some compramise, below is the final graph to look clearly
-
-sns.set_style("whitegrid");
-
-# hue = 'species' -> color encoding based on 
-# distinct species here 3 types so 3 colors
-
-#size -> size of the graph
-sns.FacetGrid(iris, hue='species',size=5) \
-    .map(plt.scatter, 'petal_width','petal_length') \
-    .add_legend();
-plt.show();
-
-Disadvantage of Pair Plot
-Here in the above case for 4d or 4 features we have 6 plots, Consider 100d or 100 features no of plots will be 100C2 plots.
-
-Visualizing Covariance Matrix
-iris.corr()
-sepal_length	sepal_width	petal_length	petal_width
-sepal_length	1.000000	-0.109369	0.871754	0.817954
-sepal_width	-0.109369	1.000000	-0.420516	-0.356544
-petal_length	0.871754	-0.420516	1.000000	0.962757
-petal_width	0.817954	-0.356544	0.962757	1.000000
-from string import ascii_letters
-import numpy as np
 import pandas as pd
-import seaborn as sns
-import matplotlib.pyplot as plt
+
+##### Load the Iris dataset
+iris = pd.read_csv('iris.csv')
+
+Dataset Overview
+Number of Data Points and Features
+
+The Iris dataset consists of 150 data points (rows) and 5 columns (features).
+
+python
+
+##### Check the shape of the dataset
+print(iris.shape)  # Output: (150, 5)
+
+Column Names
+
+The dataset contains the following columns:
+
+    Sepal Length
+    Sepal Width
+    Petal Length
+    Petal Width
+
+
+##### Display the column names
+print(iris.columns)
+
+##### Display the first few rows of the dataset
+print(iris.head())
+
+#### Data Exploration
+Distribution of Data Points
+
+The dataset is balanced, with each species having 50 data points.
+# Count of data points for each species
+print(iris['species'].value_counts())
+
+##### 2-D Scatter Plot
+
+We can visualize the relationship between two features with a 2-D scatter plot. Here's an example using sepal length and sepal width:
+iris.plot(x='sepal_length', y='sepal_width', kind='scatter', label='datapoints')
+plt.show()
+
+##### Pair Plots
+
+Pair plots are useful for visualizing relationships between all possible pairs of features. In our case, we have four features, resulting in six pair plots.
+
+sns.set_style("whitegrid")
+sns.pairplot(iris, hue='species', size=3)
+plt.show()
+
+##### Visualizing the Covariance Matrix
+
+The covariance matrix can help us understand how features are related. Here's a heatmap of the covariance matrix:
 
 sns.set(style="white")
-
-# Compute the correlation matrix
 corr = iris.corr()
-
-# Generate a mask for the upper triangle
 mask = np.zeros_like(corr, dtype=np.bool)
 mask[np.triu_indices_from(mask)] = True
-
-# Set up the matplotlib figure
 f, ax = plt.subplots(figsize=(11, 9))
-
-# Generate a custom diverging colormap
 cmap = sns.diverging_palette(220, 10, as_cmap=True)
+sns.heatmap(corr, mask=mask, cmap=cmap, vmax=.3, center=0, square=True, linewidths=.5, cbar_kws={"shrink": .5})
+plt.show()
 
-# Draw the heatmap with the mask and correct aspect ratio
-sns.heatmap(corr, mask=mask, cmap=cmap, vmax=.3, center=0,
-            square=True, linewidths=.5, cbar_kws={"shrink": .5})
-<matplotlib.axes._subplots.AxesSubplot at 0x2299667fe10>
 
-import numpy as np; np.random.seed(0)
-import seaborn as sns; sns.set()
-uniform_data = iris.corr()
-ax = sns.heatmap(uniform_data)
+###Conclusion
+
+Exploratory Data Analysis is a critical step in understanding your dataset before diving into more advanced analysis or modeling. In the case of the Iris Flower Dataset, we've explored its basic characteristics, visualized the data, and gained insights into the relationships between features. This foundational knowledge is essential for making informed decisions when working with data.
+
+Feel free to explore further and adapt this EDA process to your specific datasets and analysis goals.
+
+
+
+
+
+
+
